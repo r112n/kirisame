@@ -1,1 +1,5 @@
 *.~undo-tree~
+
+*.pdf
+*.aux
+*.log
