@@ -1,104 +1,114 @@
 #+TITLE: Emacs configuration file
 #+AUTHOR: Marisa (Nikita Stavtsev)
-#+STARTUP: fold
 
 * Base
-
-** Package repositories
-
-*** Enable MELPA package repositories
+** Repositories
+*** Load package module
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (require 'package)
+#+END_SRC
+
+*** Add MELPA to repository list
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (add-to-list 'package-archives
 	       '("melpa" . "http://melpa.org/packages/"))
+#+END_SRC
+
+*** Initialize repositories
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
 #+END_SRC
 
-*** Setting custom.el file
+*** Setting custom file
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (setq custom-file "~/.config/emacs/custom.el")
+  (setq custom-file "./custom.el")
 #+END_SRC
 
-*** Install 'use-package' package
+** use-package
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (require 'use-package)
 #+END_SRC
 
-** UI
+** Backup directory
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (setq backup-directory-alist '(("." . "~/tmp/")))
+#+END_SRC
 
-*** Base UI configuration
+** Vanilla UI
+*** Disable trash UI
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (setq inhibit-startup-message t)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (global-display-line-numbers-mode 1)
+#+END_SRC
+
+*** Enable column number in status-line
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (column-number-mode 1)
 #+END_SRC
 
-*** Backup directory
+*** TODO Global & relative line numeration
+Enable Global numeration
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (setq backup-directory-alist '(("." . "~/tmp/")))
+  (global-display-line-numbers-mode 1)
 #+END_SRC
 
-*** Theme installing and configuration
-Moe theme
+** Themes
+
+*** Moe theme
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (unless (package-installed-p 'moe-theme)
     (package-install 'moe-theme))
 #+END_SRC
 
-Abyss theme
+*** Abyss theme
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (unless (package-installed-p 'abyss-theme)
     (package-install 'abyss-theme))
 #+END_SRC
 
-*** Theme setup
+*** Theme enable
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   ;; (load-theme 'wombat t)
   ;; (load-theme 'moe-dark t)
   (load-theme 'abyss t)
 #+END_SRC
 
-** Binds
-
-*** TODO global && relative line numbers
-
-*** complition-at-point
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (global-set-key (kbd "C-M-i") 'completion-at-point)
-#+END_SRC
-
-*** keyboard-escape-quit
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-#+END_SRC
-
-* Evil-mode
-
-** Evil-mode
+* Evil
+** evil-mode
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package evil
     :ensure t
+    :init (setq evil-want-keybinding nil)
     :config (evil-mode 1)
-            (evil-set-undo-system 'undo-tree))
+	    (evil-set-undo-system 'undo-tree))
 #+END_SRC
 
-** Undo-tree
+** undo-tree
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package undo-tree
     :ensure t
     :config (global-undo-tree-mode 1))
 #+END_SRC
 
-* Helm-family
+** evil-collection
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config (evil-collection-init))
+#+END_SRC
 
-** Helm
+** TODO evil-leader
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+#+END_SRC
+
+* Helm
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package helm
     :ensure t
@@ -109,83 +119,52 @@ Abyss theme
            ("C-j" . helm-next-line)
            ("C-k" . helm-previous-line))
     :config (helm-mode 1)
-            (setq-default helm-M-x-fuzzy-match t)
+            (setq-default helm-M-x-fuzzy-match t))
 #+END_SRC
 
-* Org-mode
-
-** Org-mode settings
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (setq org-startup-folded t)
-  (setq org-startup-indented t)
-  (setq org-startup-with-inline-images nil)
-#+END_SRC
-
-** Org-superstar
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package org-superstar
-    :ensure t
-    :hook (org-mode . org-superstar-mode))
-#+END_SRC
-
-** Org-evil
-Check README.org on `https://github.com/Somelauw/evil-org-mode/blob/master/README.org`
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package org-evil
-    :ensure t
-    :hook (org-mode . org-evil-mode))
-#+END_SRC
-    
-* Useful utils
-
-** vterm
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package vterm
-    :ensure t)
-#+END_SRC
-
-#+RESULTS:
-
-** magit
+* Magit
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package magit
     :ensure t)
 #+END_SRC
 
-** pdftools
+* VTerm
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package pdf-tools
+  (use-package vterm
     :ensure t)
 #+END_SRC
 
-** which-key
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package which-key
-    :ensure t
-    :init (which-key-mode 1)
-    :config (setq which-key-idle-delay 0.3)
-    )
-#+END_SRC
-
-** feebleline
-Link to the package `https://github.com/tautologyclub/feebleline`
+* Feebleline
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package feebleline
     :ensure t
     :config (setq feebleline-msg-functions
-                  '((feebleline-line-number         :post "" :fmt "%5s")
-                    (feebleline-column-number       :pre ":" :fmt "%-2s")
-                    (feebleline-file-directory      :face feebleline-dir-face :post "")
-                    (feebleline-file-or-buffer-name :face font-lock-keyword-face :post "")
-                    (feebleline-file-modified-star  :face font-lock-warning-face :post "")
-                    (feebleline-git-branch          :face feebleline-git-face :pre " : ")
-                    (feebleline-project-name        :align right)))
+	    '((feebleline-line-number         :post "" :fmt "%5s")
+	      (feebleline-column-number       :pre ":" :fmt "%-2s")
+	      (feebleline-file-directory      :face feebleline-dir-face :post "")
+	      (feebleline-file-or-buffer-name :face font-lock-keyword-face :post "")
+	      (feebleline-file-modified-star  :face font-lock-warning-face :post "")
+	      (feebleline-git-branch          :face feebleline-git-face :pre " : ")
+	      (feebleline-project-name        :align right)))
             (feebleline-mode 1))
 #+END_SRC
 
-* Language tools
+* Which-key
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package which-key
+    :ensure t
+    :init (which-key-mode 1)
+    :config (setq which-key-idle-delay 0.3))
+#+END_SRC
 
-** LSP
+
+* Code Complition
+** complition-at-point bind
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (global-set-key (kbd "C-M-i") 'completion-at-point)
+#+END_SRC
+
+** TODO LSP
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package lsp-mode
     :ensure t)
@@ -198,23 +177,45 @@ Link to the package `https://github.com/tautologyclub/feebleline`
     :init (global-flycheck-mode 1))
 #+END_SRC
 
+* Org
+** Settings
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (setq org-startup-indented t)
+  (setq org-startup-with-inline-images nil)
+#+END_SRC
+
+** org-superstar
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package org-superstar
+    :ensure t
+    :hook (org-mode . org-superstar-mode))
+#+END_SRC
+
+** org-evil
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package org-evil
+    :ensure t
+    :hook (org-mode . org-evil-mode))
+#+END_SRC
+
 * LaTeX
 
-** AUCTeX
+** TODO AUCTeX
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package auctex
-    :ensure t
-    :defer t)
+  ;;(use-package auctex
+  ;;  :ensure t
+  ;;  :defer t)
 #+END_SRC
 
-Set preview application to pdf-tools
+** TODO pdf-tools
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+  ;;(use-package pdf-tools
+  ;;  :ensure t)
 #+END_SRC
 
-** latex-preview-pane
+** TODO latex-preview-pane
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package latex-preview-pane
-    :ensure t)
+  ;;(use-package latex-preview-pane
+  ;;  :ensure t)
 #+END_SRC
 
