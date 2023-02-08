@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration file
-#+AUTHOR: marisa (Nikita Stavtsev)
+#+AUTHOR: Marisa (Nikita Stavtsev)
 #+STARTUP: fold
 
 * Base
@@ -71,7 +71,7 @@ Abyss theme
 
 *** complition-at-point
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (global-set-key (kbd "<C-tab>") 'completion-at-point)
+  (global-set-key (kbd "C-M-i") 'completion-at-point)
 #+END_SRC
 
 *** keyboard-escape-quit
@@ -79,28 +79,22 @@ Abyss theme
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+END_SRC
 
-
 * Evil-mode
 
 ** Evil-mode
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package evil
     :ensure t
-    :config
-    (evil-mode 1)
-    (evil-set-undo-system 'undo-tree)
-    )
+    :config (evil-mode 1)
+            (evil-set-undo-system 'undo-tree))
 #+END_SRC
 
 ** Undo-tree
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package undo-tree
     :ensure t
-    :config
-    (global-undo-tree-mode 1)
-    )
+    :config (global-undo-tree-mode 1))
 #+END_SRC
-
 
 * Helm-family
 
@@ -109,17 +103,14 @@ Abyss theme
   (use-package helm
     :ensure t
     :bind (("M-x" . helm-M-x)
-	   ("C-x b" . helm-buffers-list)
-	   ("C-x C-f" . helm-find-files)
-	   :map helm-map
-	   ("C-j" . helm-next-line)
+           ("C-x b" . helm-buffers-list)
+           ("C-x C-f" . helm-find-files)
+           :map helm-map
+           ("C-j" . helm-next-line)
            ("C-k" . helm-previous-line))
-    :config
-    (helm-mode 1)
-    (setq-default helm-M-x-fuzzy-match t)
-    )
+    :config (helm-mode 1)
+            (setq-default helm-M-x-fuzzy-match t)
 #+END_SRC
-
 
 * Org-mode
 
@@ -145,8 +136,15 @@ Check README.org on `https://github.com/Somelauw/evil-org-mode/blob/master/READM
     :hook (org-mode . org-evil-mode))
 #+END_SRC
     
-
 * Useful utils
+
+** vterm
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package vterm
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
 
 ** magit
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
@@ -165,11 +163,25 @@ Check README.org on `https://github.com/Somelauw/evil-org-mode/blob/master/READM
   (use-package which-key
     :ensure t
     :init (which-key-mode 1)
-    :config
-    (setq which-key-idle-delay 0.3)
+    :config (setq which-key-idle-delay 0.3)
     )
 #+END_SRC
 
+** feebleline
+Link to the package `https://github.com/tautologyclub/feebleline`
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package feebleline
+    :ensure t
+    :config (setq feebleline-msg-functions
+                  '((feebleline-line-number         :post "" :fmt "%5s")
+                    (feebleline-column-number       :pre ":" :fmt "%-2s")
+                    (feebleline-file-directory      :face feebleline-dir-face :post "")
+                    (feebleline-file-or-buffer-name :face font-lock-keyword-face :post "")
+                    (feebleline-file-modified-star  :face font-lock-warning-face :post "")
+                    (feebleline-git-branch          :face feebleline-git-face :pre " : ")
+                    (feebleline-project-name        :align right)))
+            (feebleline-mode 1))
+#+END_SRC
 
 * Language tools
 
@@ -185,7 +197,6 @@ Check README.org on `https://github.com/Somelauw/evil-org-mode/blob/master/READM
     :ensure t
     :init (global-flycheck-mode 1))
 #+END_SRC
-
 
 * LaTeX
 
