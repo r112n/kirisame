@@ -1,5 +1,12 @@
+# ignore emacs autosave files
+\#*#
+
+# ignore undo-tree files
 *.~undo-tree~
 
+# ignore LaTeX compile products
 *.pdf
 *.aux
 *.log
+
+
