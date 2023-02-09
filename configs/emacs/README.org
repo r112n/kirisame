@@ -79,14 +79,49 @@ Enable Global numeration
   (load-theme 'abyss t)
 #+END_SRC
 
+* Helm
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package helm
+    :ensure t
+    :bind (("M-x" . helm-M-x)
+           ("C-x b" . helm-buffers-list)
+           ("C-x C-f" . helm-find-files)
+           :map helm-map
+           ("C-j" . helm-next-line)
+           ("C-k" . helm-previous-line))
+    :config (helm-mode 1)
+            (setq-default helm-M-x-fuzzy-match t))
+#+END_SRC
+
 * Evil
+
+** Preparations
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (setq evil-want-keybinding nil)
+#+END_SRC
+
+** TODO evil-leader
+- TODO --------------------
+  Window managment chords
+---------------------------
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (use-package evil-leader
+    :ensure t
+    :config (setq evil-leader/leader "<SPC>")
+            (evil-leader/set-key
+              "." 'helm-find-files
+              "b" 'helm-buffers-list
+              "k" 'kill-buffer))
+#+END_SRC
+
 ** evil-mode
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package evil
+    :after evil-leader
     :ensure t
-    :init (setq evil-want-keybinding nil)
-    :config (evil-mode 1)
-	    (evil-set-undo-system 'undo-tree))
+    :config (global-evil-leader-mode 1)
+            (evil-mode 1)
+            (evil-set-undo-system 'undo-tree))
 #+END_SRC
 
 ** undo-tree
@@ -104,24 +139,6 @@ Enable Global numeration
     :config (evil-collection-init))
 #+END_SRC
 
-** TODO evil-leader
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-#+END_SRC
-
-* Helm
-#+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  (use-package helm
-    :ensure t
-    :bind (("M-x" . helm-M-x)
-           ("C-x b" . helm-buffers-list)
-           ("C-x C-f" . helm-find-files)
-           :map helm-map
-           ("C-j" . helm-next-line)
-           ("C-k" . helm-previous-line))
-    :config (helm-mode 1)
-            (setq-default helm-M-x-fuzzy-match t))
-#+END_SRC
-
 * Magit
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package magit
@@ -131,7 +148,8 @@ Enable Global numeration
 * VTerm
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package vterm
-    :ensure t)
+    :ensure t
+    :init (add-hook 'vterm-mode-hook (lambda() (display-line-numbers-mode 0))))
 #+END_SRC
 
 * Feebleline
@@ -156,7 +174,6 @@ Enable Global numeration
     :init (which-key-mode 1)
     :config (setq which-key-idle-delay 0.3))
 #+END_SRC
-
 
 * Code Complition
 ** complition-at-point bind
@@ -200,22 +217,22 @@ Enable Global numeration
 
 * LaTeX
 
-** TODO AUCTeX
+** AUCTeX
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  ;;(use-package auctex
-  ;;  :ensure t
-  ;;  :defer t)
+  (use-package auctex
+    :ensure t
+    :defer t)
 #+END_SRC
 
-** TODO pdf-tools
+** pdf-tools
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  ;;(use-package pdf-tools
-  ;;  :ensure t)
+  (use-package pdf-tools
+    :ensure t)
 #+END_SRC
 
-** TODO latex-preview-pane
+** latex-preview-pane
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
-  ;;(use-package latex-preview-pane
-  ;;  :ensure t)
+  (use-package latex-preview-pane
+    :ensure t)
 #+END_SRC
 
