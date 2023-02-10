@@ -24,6 +24,12 @@
 
 (global-display-line-numbers-mode 1)
 
+(defun switch-line-numeration ()
+  (interactive)
+  (if (eq display-line-numbers t)
+      (setq display-line-numbers 'relative)
+    (setq display-line-numbers t)))
+
 (unless (package-installed-p 'moe-theme)
   (package-install 'moe-theme))
 
@@ -53,7 +59,8 @@
           (evil-leader/set-key
             "." 'helm-find-files
             "b" 'helm-buffers-list
-            "k" 'kill-buffer))
+            "k" 'kill-buffer
+            "\\" 'switch-line-numeration))
 
 (use-package evil
   :after evil-leader

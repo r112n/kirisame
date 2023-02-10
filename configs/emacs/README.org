@@ -52,10 +52,19 @@
   (column-number-mode 1)
 #+END_SRC
 
-*** TODO Global & relative line numeration
-Enable Global numeration
+*** Line numeration
+Enable Global line numeration
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (global-display-line-numbers-mode 1)
+#+END_SRC
+
+Add switch between global & relative line numeration
+#+BEGIN_SRC emacs-lisp :tangle "./init.el"
+  (defun switch-line-numeration ()
+    (interactive)
+    (if (eq display-line-numbers t)
+        (setq display-line-numbers 'relative)
+      (setq display-line-numbers t)))
 #+END_SRC
 
 ** Themes
@@ -101,9 +110,9 @@ Enable Global numeration
 #+END_SRC
 
 ** TODO evil-leader
-- TODO --------------------
-  Window managment chords
----------------------------
+- TODO ----------------------
+  = Window managment binds
+-----------------------------
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package evil-leader
     :ensure t
@@ -111,7 +120,8 @@ Enable Global numeration
             (evil-leader/set-key
               "." 'helm-find-files
               "b" 'helm-buffers-list
-              "k" 'kill-buffer))
+              "k" 'kill-buffer
+              "\\" 'switch-line-numeration))
 #+END_SRC
 
 ** evil-mode
@@ -182,6 +192,9 @@ Enable Global numeration
 #+END_SRC
 
 ** TODO LSP
+- TODO -------------
+  LSP invoke bind 
+--------------------
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package lsp-mode
     :ensure t)
