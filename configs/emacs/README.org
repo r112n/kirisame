@@ -109,19 +109,26 @@ Add switch between global & relative line numeration
   (setq evil-want-keybinding nil)
 #+END_SRC
 
-** TODO evil-leader
-- TODO ----------------------
-  = Window managment binds
------------------------------
+** evil-leader
 #+BEGIN_SRC emacs-lisp :tangle "./init.el"
   (use-package evil-leader
     :ensure t
     :config (setq evil-leader/leader "<SPC>")
             (evil-leader/set-key
-              "." 'helm-find-files
-              "b" 'helm-buffers-list
-              "k" 'kill-buffer
-              "\\" 'switch-line-numeration))
+              "," 'helm-find-files
+              "b l" 'helm-buffers-list
+              "b k" 'kill-buffer
+              ;;--------------------------
+              "\\" 'switch-line-numeration
+              ;;--------------------------
+              "w s" 'evil-window-split
+              "w v" 'evil-window-vsplit
+              "w c" 'evil-window-delete
+              ;;--------------------------
+              "w h" 'evil-window-left
+              "w j" 'evil-window-down
+              "w k" 'evil-window-up
+              "w l" 'evil-window-right))
 #+END_SRC
 
 ** evil-mode

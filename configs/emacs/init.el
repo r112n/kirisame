@@ -57,10 +57,20 @@
   :ensure t
   :config (setq evil-leader/leader "<SPC>")
           (evil-leader/set-key
-            "." 'helm-find-files
-            "b" 'helm-buffers-list
-            "k" 'kill-buffer
-            "\\" 'switch-line-numeration))
+            "," 'helm-find-files
+            "b l" 'helm-buffers-list
+            "b k" 'kill-buffer
+            ;;--------------------------
+            "\\" 'switch-line-numeration
+            ;;--------------------------
+            "w s" 'evil-window-split
+            "w v" 'evil-window-vsplit
+            "w c" 'evil-window-delete
+            ;;--------------------------
+            "w h" 'evil-window-left
+            "w j" 'evil-window-down
+            "w k" 'evil-window-up
+            "w l" 'evil-window-right))
 
 (use-package evil
   :after evil-leader
