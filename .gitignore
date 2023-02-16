@@ -12,3 +12,6 @@
 # ignore binaries
 *.o
 software/dwm-6.4/dwm
+software/dmenu-5.2/dmenu
+software/dmenu-5.2/stest
+
