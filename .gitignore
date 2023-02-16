@@ -9,4 +9,6 @@
 *.aux
 *.log
 
-
+# ignore binaries
+*.o
+software/dwm-6.4/dwm
