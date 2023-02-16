@@ -8,6 +8,7 @@
 ## Installation
 
 	sudo make clean install
+	cp dwm.desktop /usr/share/xsessions/
 
 
 ## dwm-6.4 README
