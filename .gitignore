@@ -1,3 +1,6 @@
+# ignore shit files
+*.*~
+
 # ignore emacs autosave files
 \#*#
 
