@@ -40,16 +40,20 @@
 ;; (load-theme 'moe-dark t)
 (load-theme 'abyss t)
 
-(use-package helm
+(use-package ivy
   :ensure t
-  :bind (("M-x" . helm-M-x)
-         ("C-x b" . helm-buffers-list)
-         ("C-x C-f" . helm-find-files)
-         :map helm-map
-         ("C-j" . helm-next-line)
-         ("C-k" . helm-previous-line))
-  :config (helm-mode 1)
-          (setq-default helm-M-x-fuzzy-match t))
+  :config (ivy-mode)
+          (setq ivy-use-virtual-buffers t)
+          (setq enable-recursive-minibuffers t)
+          (setq search-default-mode #'char-fold-to-regexp))
+
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)))
+
+(use-package swiper
+  :ensure t)
 
 (setq evil-want-keybinding nil)
 
@@ -57,9 +61,14 @@
   :ensure t
   :config (setq evil-leader/leader "<SPC>")
           (evil-leader/set-key
-            "," 'helm-find-files
-            "b l" 'helm-buffers-list
+            "," 'counsel-find-file
+            "." 'ivy-resume
+            "b l" 'buffer-menu
             "b k" 'kill-buffer
+            ;;--------------------------
+            ;;"," 'helm-find-files
+            ;;"b l" 'helm-buffers-list
+            ;;"b k" 'kill-buffer
             ;;--------------------------
             "\\" 'switch-line-numeration
             ;;--------------------------
@@ -123,6 +132,7 @@
 
 (setq org-startup-indented t)
 (setq org-startup-with-inline-images nil)
+(setq org-latex-create-formula-image-program 'imagemagick)
 
 (use-package org-superstar
   :ensure t
@@ -141,3 +151,14 @@
 
 (use-package latex-preview-pane
   :ensure t)
+
+(use-package latex-math-preview
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t)
+
+(use-package ein
+  :ensure t
+  :config (setq ein:output-inlined-images t)
+          (setq ein:slice-image t))

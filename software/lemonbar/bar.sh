@@ -39,7 +39,8 @@ Battery() {
 while true; do
     WORKSPACES="$(Workspaces)"
     WINDOWNAME="$(Active_window)"
-    DATE="%{F#FFFF00}%{B#0000FF} $(Clock) %{F-}%{B-}"
+    # DATE="%{F#FFFF00}%{B#0000FF} $(Clock) %{F-}%{B-}"
+    DATE="$(Clock)"
     BATTERY="$(Battery)"
 
     LEFT="%{l} $WORKSPACES |"
