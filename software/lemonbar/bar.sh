@@ -33,7 +33,15 @@ Clock() {
 # Define battery
 Battery() {
     BATTERY_CH=$(acpi | gawk -F ',' '{print $2}' | cut -c 2-)
-    echo $BATTERY_CH
+
+    BATTERY_STATUS=$(acpi | gawk -F ',' '{print $1}' | gawk '{print $3}')
+    if [[ "$BATTERY_STATUS" == "Charging" ]]; then
+	echo "%{F#00FF00}${BATTERY_CH} %{F-}"
+    elif [[ "$BATTERY_STATUS" == "Discharging" ]]; then
+	echo "%{F#FF0000}${BATTERY_CH} %{F-}"
+    else
+	echo "$BATTERY_CH " 
+    fi
 }
 
 while true; do
@@ -45,6 +53,6 @@ while true; do
 
     LEFT="%{l} $WORKSPACES |"
     CENTER="%{c} $WINDOWNAME"
-    RIGHT="%{r} $BATTERY | $DATE"
+    RIGHT="%{r} ${BATTERY}| $DATE"
     echo "$LEFT $CENTER $RIGHT"
 done
